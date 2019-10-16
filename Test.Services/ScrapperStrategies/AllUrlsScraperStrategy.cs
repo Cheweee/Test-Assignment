@@ -8,9 +8,9 @@ using Test.Utilities.Extensibility;
 
 namespace Test.Services.ScraperStrategies
 {
-    public class ImagesSourcesScraperStrategy : IAppendStrategyExtensionsReader
+    public class AllUrlsScraperStrategy : IAppendStrategyExtensionsReader
     {
-        private const string name = "imagessources";
+        private const string name = "allurls";
 
         public async Task<IEnumerable<string>> Process(HtmlDocument document, ExtensibleGetOptions options, List<string> urls)
         {
@@ -18,11 +18,18 @@ namespace Test.Services.ScraperStrategies
                 return urls;
             await Task.Run(() =>
             {
-                var links = document.DocumentNode.SelectNodes("//img[@src]");
+                var aLinks = document.DocumentNode.SelectNodes("//a[@href]");
+                var liLinks = document.DocumentNode.SelectNodes("//link[@href]");
 
-                foreach (var link in links)
+                foreach (var link in aLinks)
                 {
-                    HtmlAttribute attr = link.Attributes["src"];
+                    HtmlAttribute attr = link.Attributes["href"];
+                    if (!string.IsNullOrEmpty(attr.Value))
+                        urls.Add(attr.Value);
+                }
+                foreach (var link in liLinks)
+                {
+                    HtmlAttribute attr = link.Attributes["href"];
                     if (!string.IsNullOrEmpty(attr.Value))
                         urls.Add(attr.Value);
                 }

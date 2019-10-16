@@ -7,8 +7,13 @@ namespace Test.Services.ScraperStrategies
 {
     public class DoesNotContainsProfileScraperStrategy : IExcludeStrategyExtensionsReader
     {
+        private const string name = "doesnotcontainsprofile";
+
         public async Task<IEnumerable<string>> Process(ExtensibleGetOptions options, List<string> urls)
         {
+            if (!options.PartIsUsed(name))
+                return urls;
+                
             await Task.Run(() =>
             {
                 foreach (string url in urls)
