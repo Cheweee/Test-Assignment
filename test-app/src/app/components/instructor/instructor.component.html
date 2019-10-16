@@ -1,0 +1,19 @@
+<h1 mat-dialog-title>Instructor</h1>
+<div fxLayout="column" mat-dialog-content>
+    <mat-form-field appearance="outline">
+        <mat-label>First Name</mat-label>
+        <input matInput required [(ngModel)]="data.firstName">
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+        <mat-label>Second Name</mat-label>
+        <input matInput [(ngModel)]="data.secondName">
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+        <mat-label>Last Name</mat-label>
+        <input matInput required [(ngModel)]="data.lastName">
+    </mat-form-field>
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click)="onCancelClick()">Cancel</button>
+    <button mat-button [mat-dialog-close]="data" cdkFocusInitial color="primary">Ok</button>
+</div>
