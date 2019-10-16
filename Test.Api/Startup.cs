@@ -46,7 +46,7 @@ namespace Test.Api
             });
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-            string connectionString = "data source=localhost\\sqlexpress;initial catalog=Test;user id=sa;password=qwerty_123";
+            string connectionString = AppSettings.MSSqlServerConnectionString;
 
             services.AddScoped(provider =>
             {
@@ -60,6 +60,9 @@ namespace Test.Api
                 return new InstructorService(daoFactory.InstructorDao);
             });
 
+            services.AddScoped(provider => new AllUrlsScraperStrategy());
+            services.AddScoped<IAppendStrategyExtensionsReader>(provider => provider.GetService<AllUrlsScraperStrategy>());
+
             services.AddScoped(provider => new ImagesSourcesScraperStrategy());
             services.AddScoped<IAppendStrategyExtensionsReader>(provider => provider.GetService<ImagesSourcesScraperStrategy>());
             
@@ -68,7 +71,8 @@ namespace Test.Api
 
             services.AddScoped(provider =>
             {
-                return new ScraperService(provider.ComposeAppendStrategyReaders(), provider.ComposeExcludeStrategyReaders());
+                var logger = provider.GetService<ILogger<ScraperService>>();
+                return new ScraperService(logger, provider.ComposeAppendStrategyReaders(), provider.ComposeExcludeStrategyReaders());
             });
         }
 
