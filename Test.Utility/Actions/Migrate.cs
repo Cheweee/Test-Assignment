@@ -4,9 +4,12 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Test.Data.DataAccessObjects.MSSql;
 using Microsoft.EntityFrameworkCore;
+using CommandLine;
 
 namespace Test.Utility.Actions
 {
+    [Verb("migrate", HelpText = "Migrate the DB schema to the latest version")]
+    class MigrateOptions { }
     public class Migrate
     {
         public static int Run(ILogger logger)
@@ -15,7 +18,7 @@ namespace Test.Utility.Actions
             {
                 logger.LogInformation($"Start migrating the {AppSettings.DatabaseName} database");
 
-                using(var context = new DatabaseContext(AppSettings.MSSqlServerConnectionString))
+                using (var context = new DatabaseContext(AppSettings.MSSqlServerConnectionString))
                 {
                     context.Database.Migrate();
                 }
