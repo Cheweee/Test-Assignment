@@ -4,6 +4,6 @@ This project is test assignment to show my skill level of app development using 
 Prerequisites:
 * .Net Core 2.2;
 * MS Sql server;
-* Angular Cli.
+* Angular Cli.\
 Installig:\
 For installing project you just should copy this repo on your local and check .net core 2.2, ms sql server and angular cli already been installed.
