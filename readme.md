@@ -1,7 +1,7 @@
 **Test Assignmet**\
 This project is test assignment to show my skill level of app development using *Angular*, *ASP.NET Core* and *MSSql*.\
 **Getting Started:**\
-Prerequisites:\
+Prerequisites:
 * .Net Core 2.2;\
 * MS Sql server;\
 * Angular Cli;\
