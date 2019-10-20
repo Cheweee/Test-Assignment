@@ -36,7 +36,9 @@ namespace Test.Services
                 website.AutoDetectEncoding = false;
                 website.OverrideEncoding = Encoding.Default;
 
-                HtmlDocument document = website.Load(options.SourceUrl);
+                Uri targetUri = new Uri(options.SourceUrl);
+
+                HtmlDocument document = website.Load(targetUri);
                 document.OptionComputeChecksum = true;
 
                 await _appendStrategyReader.Process(document, options, urls);
@@ -44,15 +46,14 @@ namespace Test.Services
 
                 string domain = GetDomainUrl(originalUrl).ToLower();
 
-                IEnumerable<string> newUrls = new List<string>();
+                List<string> newUrls = new List<string>();
                 foreach (string url in urls)
                 {
                     if (!url.ToLower().Contains(domain) || url == originalUrl)
                         continue;
 
-                    newUrls = await Process(new ExtensibleGetOptions { Parts = options.Parts, SourceUrl = url }, originalUrl);
+                    newUrls.AddRange(await Process(new ExtensibleGetOptions { Parts = options.Parts, SourceUrl = url }, originalUrl));
                 }
-
                 urls.AddRange(newUrls);
             }
             catch (Exception exception)
